@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Navy: #0B2C4A */
+    --navy: 0.22 0.07 243;
+    /* Navy deep: #0A3A63 */
+    --navy-deep: 0.25 0.09 243;
+    /* Orange: #F28C1B */
+    --orange: 0.7 0.17 58;
+    /* Orange dark: #E97E12 */
+    --orange-dark: 0.67 0.17 55;
+
+    --background: 0.97 0.005 243;
+    --foreground: 0.22 0.02 250;
+    --card: 1 0 0;
+    --card-foreground: 0.22 0.02 250;
+    --popover: 1 0 0;
+    --popover-foreground: 0.22 0.02 250;
+    --primary: 0.7 0.17 58;
+    --primary-foreground: 1 0 0;
+    --secondary: 0.22 0.07 243;
+    --secondary-foreground: 1 0 0;
+    --muted: 0.96 0.005 243;
+    --muted-foreground: 0.52 0.015 250;
+    --accent: 0.96 0.005 243;
+    --accent-foreground: 0.22 0.02 250;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.9 0.01 243;
+    --input: 0.92 0.008 243;
+    --ring: 0.7 0.17 58;
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+    --sidebar: 0.22 0.07 243;
+    --sidebar-foreground: 1 0 0;
+    --sidebar-primary: 0.7 0.17 58;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.25 0.09 243;
+    --sidebar-accent-foreground: 1 0 0;
+    --sidebar-border: 0.3 0.05 243;
+    --sidebar-ring: 0.7 0.17 58;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+}
+
+@layer utilities {
+  .text-navy {
+    color: oklch(var(--navy));
+  }
+  .bg-navy {
+    background-color: oklch(var(--navy));
+  }
+  .bg-navy-deep {
+    background-color: oklch(var(--navy-deep));
+  }
+  .text-orange {
+    color: oklch(var(--orange));
+  }
+  .bg-orange {
+    background-color: oklch(var(--orange));
+  }
+  .border-orange {
+    border-color: oklch(var(--orange));
+  }
+  .hero-gradient {
+    background: linear-gradient(
+      105deg,
+      oklch(0.12 0.07 243 / 0.97) 0%,
+      oklch(0.18 0.08 243 / 0.9) 55%,
+      oklch(0.22 0.07 243 / 0.4) 100%
+    );
+  }
+  .orange-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.68 0.17 55) 0%,
+      oklch(0.73 0.16 62) 100%
+    );
+  }
+  .drcc-band {
+    background: linear-gradient(
+      90deg,
+      oklch(0.22 0.07 243) 0%,
+      oklch(0.28 0.09 243) 100%
+    );
+  }
+  .card-shadow {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+}
