@@ -11,6 +11,7 @@ export interface LeadFormData {
   twelfthStream: Stream;
   twelfthPercentage: number;
   interestedCourse: Course;
+  otherCourseText: string | null;
   needsDrccSupport: boolean;
   entranceExam: EntranceExam;
 }
@@ -27,6 +28,7 @@ export function useSubmitLead() {
         data.twelfthStream,
         BigInt(data.twelfthPercentage),
         data.interestedCourse,
+        data.otherCourseText,
         data.needsDrccSupport,
         data.entranceExam,
       );

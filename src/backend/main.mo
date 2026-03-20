@@ -1,12 +1,27 @@
 import Map "mo:core/Map";
-import Array "mo:core/Array";
-import Order "mo:core/Order";
+import List "mo:core/List";
 import Runtime "mo:core/Runtime";
+import Order "mo:core/Order";
+import Array "mo:core/Array";
 import Principal "mo:core/Principal";
+
+
 
 actor {
   type Stream = { #science; #commerce; #arts };
-  type Course = { #bca; #bba; #bcom; #bsc; #diploma; #other };
+  type Course = {
+    #bca;
+    #bba;
+    #bcom;
+    #bsc;
+    #diploma;
+    #btech;
+    #agriculture;
+    #pharmacy;
+    #llb;
+    #mba;
+    #other;
+  };
   type EntranceExam = { #jee; #neet; #cuet; #none };
 
   type Lead = {
@@ -16,6 +31,7 @@ actor {
     twelfthStream : Stream;
     twelfthPercentage : Nat;
     interestedCourse : Course;
+    otherCourseText : ?Text;
     needsDrccSupport : Bool;
     entranceExam : EntranceExam;
   };
@@ -35,6 +51,7 @@ actor {
     twelfthStream : Stream,
     twelfthPercentage : Nat,
     interestedCourse : Course,
+    otherCourseText : ?Text,
     needsDrccSupport : Bool,
     entranceExam : EntranceExam,
   ) : async () {
@@ -46,6 +63,7 @@ actor {
       twelfthStream;
       twelfthPercentage;
       interestedCourse;
+      otherCourseText;
       needsDrccSupport;
       entranceExam;
     };

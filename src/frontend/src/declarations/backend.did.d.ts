@@ -13,8 +13,13 @@ import type { Principal } from '@icp-sdk/core/principal';
 export type Course = { 'bba' : null } |
   { 'bca' : null } |
   { 'bsc' : null } |
+  { 'llb' : null } |
+  { 'mba' : null } |
   { 'other' : null } |
   { 'bcom' : null } |
+  { 'pharmacy' : null } |
+  { 'btech' : null } |
+  { 'agriculture' : null } |
   { 'diploma' : null };
 export type EntranceExam = { 'jee' : null } |
   { 'cuet' : null } |
@@ -22,6 +27,7 @@ export type EntranceExam = { 'jee' : null } |
   { 'none' : null };
 export interface Lead {
   'twelfthStream' : Stream,
+  'otherCourseText' : [] | [string],
   'interestedCourse' : Course,
   'fullName' : string,
   'mobileNumber' : string,
@@ -36,7 +42,17 @@ export type Stream = { 'arts' : null } |
 export interface _SERVICE {
   'getAllLeads' : ActorMethod<[], Array<Lead>>,
   'submitLead' : ActorMethod<
-    [string, string, string, Stream, bigint, Course, boolean, EntranceExam],
+    [
+      string,
+      string,
+      string,
+      Stream,
+      bigint,
+      Course,
+      [] | [string],
+      boolean,
+      EntranceExam,
+    ],
     undefined
   >,
 }

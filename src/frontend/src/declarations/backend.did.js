@@ -17,8 +17,13 @@ export const Course = IDL.Variant({
   'bba' : IDL.Null,
   'bca' : IDL.Null,
   'bsc' : IDL.Null,
+  'llb' : IDL.Null,
+  'mba' : IDL.Null,
   'other' : IDL.Null,
   'bcom' : IDL.Null,
+  'pharmacy' : IDL.Null,
+  'btech' : IDL.Null,
+  'agriculture' : IDL.Null,
   'diploma' : IDL.Null,
 });
 export const EntranceExam = IDL.Variant({
@@ -29,6 +34,7 @@ export const EntranceExam = IDL.Variant({
 });
 export const Lead = IDL.Record({
   'twelfthStream' : Stream,
+  'otherCourseText' : IDL.Opt(IDL.Text),
   'interestedCourse' : Course,
   'fullName' : IDL.Text,
   'mobileNumber' : IDL.Text,
@@ -48,6 +54,7 @@ export const idlService = IDL.Service({
         Stream,
         IDL.Nat,
         Course,
+        IDL.Opt(IDL.Text),
         IDL.Bool,
         EntranceExam,
       ],
@@ -68,8 +75,13 @@ export const idlFactory = ({ IDL }) => {
     'bba' : IDL.Null,
     'bca' : IDL.Null,
     'bsc' : IDL.Null,
+    'llb' : IDL.Null,
+    'mba' : IDL.Null,
     'other' : IDL.Null,
     'bcom' : IDL.Null,
+    'pharmacy' : IDL.Null,
+    'btech' : IDL.Null,
+    'agriculture' : IDL.Null,
     'diploma' : IDL.Null,
   });
   const EntranceExam = IDL.Variant({
@@ -80,6 +92,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const Lead = IDL.Record({
     'twelfthStream' : Stream,
+    'otherCourseText' : IDL.Opt(IDL.Text),
     'interestedCourse' : Course,
     'fullName' : IDL.Text,
     'mobileNumber' : IDL.Text,
@@ -99,6 +112,7 @@ export const idlFactory = ({ IDL }) => {
           Stream,
           IDL.Nat,
           Course,
+          IDL.Opt(IDL.Text),
           IDL.Bool,
           EntranceExam,
         ],

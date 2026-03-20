@@ -13,10 +13,8 @@ import {
   CheckCircle,
   ChevronRight,
   Clock,
-  Facebook,
   GraduationCap,
   Heart,
-  Instagram,
   Mail,
   MapPin,
   Menu,
@@ -28,7 +26,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { SiWhatsapp } from "react-icons/si";
+import { SiFacebook, SiInstagram, SiWhatsapp } from "react-icons/si";
 import {
   Course,
   EntranceExam,
@@ -79,11 +77,18 @@ const BIHAR_DISTRICTS = [
 
 const COURSES = [
   {
+    value: Course.btech,
+    label: "B.Tech",
+    duration: "4 Years",
+    careers: "Engineering, IT, Software",
+    icon: "💻",
+  },
+  {
     value: Course.bca,
     label: "BCA",
     duration: "3 Years",
     careers: "Software Developer, IT, Web Designer",
-    icon: "💻",
+    icon: "🖥️",
   },
   {
     value: Course.bba,
@@ -113,47 +118,68 @@ const COURSES = [
     careers: "Technical Jobs, Engineering Assistant",
     icon: "🔧",
   },
+  {
+    value: Course.agriculture,
+    label: "Agriculture",
+    duration: "4 Years",
+    careers: "Farming, Research, Government Jobs",
+    icon: "🌾",
+  },
+  {
+    value: Course.pharmacy,
+    label: "Pharmacy",
+    duration: "4 Years",
+    careers: "Pharmacist, Medical Field",
+    icon: "💊",
+  },
+  {
+    value: Course.llb,
+    label: "LLB",
+    duration: "3 Years",
+    careers: "Lawyer, Legal Advisor",
+    icon: "⚖️",
+  },
+  {
+    value: Course.mba,
+    label: "MBA",
+    duration: "2 Years",
+    careers: "Business, Management, Finance",
+    icon: "📈",
+  },
 ];
 
-const WHY_CHOOSE = [
+const WHY_LEFT = [
+  { title: "Free Personal Guidance", desc: "No charges for counselling" },
+  { title: "DRCC Experts", desc: "We specialize in Bihar Student Credit Card" },
   {
-    icon: GraduationCap,
-    title: "Free Personal Guidance",
-    desc: "No charges for counselling",
-  },
-  {
-    icon: Wallet,
-    title: "DRCC Experts",
-    desc: "We specialize in Bihar Student Credit Card",
-  },
-  {
-    icon: Building2,
     title: "Affordable College Options",
     desc: "We help you find low-fee colleges",
   },
-  {
-    icon: Users,
-    title: "Proven Track Record",
-    desc: "Helped 100+ students last year",
-  },
-  { icon: Clock, title: "Quick Response", desc: "We reply within 24 hours" },
+  { title: "Owner: RG ARNAV RAJ", desc: "Personally guiding each student" },
+];
+
+const WHY_RIGHT = [
+  { title: "Proven Track Record", desc: "Helping Bihar students since 2026" },
+  { title: "Quick Response", desc: "We reply within 24 hours" },
+  { title: "Based in Bihar", desc: "We understand local education system" },
+  { title: "WhatsApp Community", desc: "24x7 updates and support" },
 ];
 
 const TESTIMONIALS = [
   {
-    text: "I was confused after 12th. CourseAdmission.in helped me choose BCA and also guided me through DRCC loan. Got admission in a good college.",
+    text: "I was confused after 12th. RG ARNAV sir helped me choose BCA and guided me through DRCC loan. Got admission in a good college.",
     name: "Ravi Kumar",
     location: "Patna",
     initial: "R",
   },
   {
-    text: "Very helpful guidance. They explained all course options and helped me find an affordable BBA college. Highly recommended.",
+    text: "Very helpful guidance from RG ARNAV EDU CONSULTANCY. They explained all course options and helped me find an affordable BBA college.",
     name: "Priya Singh",
     location: "Gaya",
     initial: "P",
   },
   {
-    text: "The DRCC guidance was excellent. I got 0% interest loan for my B.Sc admission. Thank you!",
+    text: "The DRCC guidance was excellent. I got 0% interest loan for my B.Sc admission. Thank you RG ARNAV RAJ sir!",
     name: "Ankit Raj",
     location: "Muzaffarpur",
     initial: "A",
@@ -196,6 +222,7 @@ export default function App() {
     twelfthStream: "" as Stream | "",
     twelfthPercentage: "",
     interestedCourse: "" as Course | "",
+    otherCourseText: "",
     needsDrccSupport: "",
     entranceExam: "" as EntranceExam | "",
   });
@@ -224,6 +251,10 @@ export default function App() {
         twelfthStream: form.twelfthStream as Stream,
         twelfthPercentage: Number(form.twelfthPercentage),
         interestedCourse: form.interestedCourse as Course,
+        otherCourseText:
+          form.interestedCourse === Course.other
+            ? form.otherCourseText || null
+            : null,
         needsDrccSupport: form.needsDrccSupport === "yes",
         entranceExam: form.entranceExam as EntranceExam,
       });
@@ -245,8 +276,7 @@ export default function App() {
       {/* HEADER */}
       <header className="sticky top-0 z-50 bg-white shadow-md" id="home">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-18">
-            {/* Logo */}
+          <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-orange rounded-lg flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-white" />
@@ -257,7 +287,6 @@ export default function App() {
               </span>
             </div>
 
-            {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <button
@@ -281,7 +310,6 @@ export default function App() {
               >
                 Get Free Guidance
               </button>
-              {/* Mobile menu toggle */}
               <button
                 type="button"
                 data-ocid="nav.menu.toggle"
@@ -299,7 +327,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3">
             {navLinks.map((link) => (
@@ -333,12 +360,11 @@ export default function App() {
 
       {/* HERO */}
       <section
-        className="relative overflow-hidden bg-navy min-h-[580px] flex items-center"
+        className="relative overflow-hidden min-h-[580px] flex items-center"
         style={{
           background: "linear-gradient(105deg, #0B2C4A 0%, #0A3A63 100%)",
         }}
       >
-        {/* Decorative background pattern */}
         <div
           className="absolute inset-0 opacity-5"
           style={{
@@ -346,42 +372,36 @@ export default function App() {
               "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
           }}
         />
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="max-w-2xl">
-            {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-orange/20 border border-orange/40 text-orange rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium mb-6">
               <Star className="w-3.5 h-3.5 fill-current" />
               DRCC / Student Credit Card Support Available (0% Interest Loan up
               to ₹4 Lakhs)
             </div>
-
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5">
               Confused After 12th?{" "}
               <span className="text-orange">We Help You Choose</span> the Right
-              Course & College
+              Course &amp; College
             </h1>
-
             <p className="text-base sm:text-lg text-white/80 mb-8 leading-relaxed">
               Free Admission Guidance for Bihar Students |{" "}
               <span className="font-semibold text-white">
-                BCA | BBA | B.Com | B.Sc | Diploma
+                BCA | BBA | B.Com | B.Sc | B.Tech | MBA | LLB | Agriculture |
+                Pharmacy | Diploma
               </span>
             </p>
-
             <button
               type="button"
               data-ocid="hero.get_guidance.button"
               onClick={() => scrollTo("contact")}
-              className="inline-flex items-center gap-2 bg-orange text-white px-7 py-3.5 rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl hover:bg-[oklch(0.67_0.17_55)] transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-orange text-white px-7 py-3.5 rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-200"
             >
               Get Free Guidance – Fill the Form
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
-
-        {/* Decorative right side circle */}
         <div className="absolute right-0 top-0 bottom-0 w-1/3 hidden lg:flex items-center justify-center opacity-10">
           <div className="w-96 h-96 rounded-full border-[3px] border-white" />
           <div className="absolute w-64 h-64 rounded-full border-[3px] border-orange" />
@@ -400,7 +420,7 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-8">
             {COURSES.map((c, i) => (
               <div
                 key={c.value}
@@ -408,7 +428,7 @@ export default function App() {
                 className="bg-white rounded-xl border border-border card-shadow p-5 flex flex-col items-center text-center hover:border-orange hover:shadow-lg transition-all duration-200 group"
               >
                 <div className="text-4xl mb-3">{c.icon}</div>
-                <h3 className="font-bold text-foreground text-lg group-hover:text-orange transition-colors">
+                <h3 className="font-bold text-foreground text-base group-hover:text-orange transition-colors">
                   {c.label}
                 </h3>
                 <span className="text-xs text-muted-foreground mb-2">
@@ -439,7 +459,6 @@ export default function App() {
 
       {/* DRCC */}
       <section id="drcc-guide">
-        {/* Blue band header */}
         <div className="drcc-band py-6 px-4">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
@@ -448,7 +467,6 @@ export default function App() {
             </h2>
           </div>
         </div>
-
         <div className="bg-muted py-14 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl card-shadow p-8 sm:p-10">
@@ -478,7 +496,7 @@ export default function App() {
                     type="button"
                     data-ocid="drcc.get_guidance.button"
                     onClick={() => scrollTo("contact")}
-                    className="inline-flex items-center gap-2 bg-orange text-white px-6 py-3 rounded-xl font-bold hover:bg-[oklch(0.67_0.17_55)] transition-colors shadow-md"
+                    className="inline-flex items-center gap-2 bg-orange text-white px-6 py-3 rounded-xl font-bold transition-colors shadow-md"
                   >
                     Get DRCC Guidance Now <ChevronRight className="w-4 h-4" />
                   </button>
@@ -501,7 +519,6 @@ export default function App() {
               Simple 4-step process to get you admitted
             </p>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {HOW_STEPS.map((step) => (
               <div
@@ -534,8 +551,8 @@ export default function App() {
               Get Free Admission Guidance Now
             </h2>
             <p className="text-white/85 text-sm sm:text-base">
-              Fill this form and we'll contact you within 24 hours with course &
-              college suggestions
+              Fill this form and we'll contact you within 24 hours with course
+              &amp; college suggestions
             </p>
           </div>
 
@@ -543,6 +560,17 @@ export default function App() {
             className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8"
             data-ocid="lead.modal"
           >
+            {/* Google Form CTA */}
+            <a
+              href="https://forms.gle/NhzQWPpbd5wjusc99"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-ocid="lead.google_form.button"
+              className="bg-[#2563eb] text-white px-8 py-4 rounded-full font-bold text-lg w-full block text-center mb-6 hover:bg-blue-700 transition"
+            >
+              📝 Fill Admission Form Now
+            </a>
+
             {submitted ? (
               <div className="text-center py-10" data-ocid="form.success_state">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -567,6 +595,7 @@ export default function App() {
                       twelfthStream: "",
                       twelfthPercentage: "",
                       interestedCourse: "",
+                      otherCourseText: "",
                       needsDrccSupport: "",
                       entranceExam: "",
                     });
@@ -710,6 +739,7 @@ export default function App() {
                         setForm((p) => ({
                           ...p,
                           interestedCourse: v as Course,
+                          otherCourseText: "",
                         }))
                       }
                     >
@@ -720,18 +750,54 @@ export default function App() {
                         <SelectValue placeholder="Select a course" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value={Course.btech}>B.Tech</SelectItem>
                         <SelectItem value={Course.bca}>BCA</SelectItem>
                         <SelectItem value={Course.bba}>BBA</SelectItem>
                         <SelectItem value={Course.bcom}>B.Com</SelectItem>
                         <SelectItem value={Course.bsc}>B.Sc</SelectItem>
                         <SelectItem value={Course.diploma}>Diploma</SelectItem>
-                        <SelectItem value={Course.other}>Other</SelectItem>
+                        <SelectItem value={Course.agriculture}>
+                          Agriculture
+                        </SelectItem>
+                        <SelectItem value={Course.pharmacy}>
+                          Pharmacy
+                        </SelectItem>
+                        <SelectItem value={Course.llb}>LLB</SelectItem>
+                        <SelectItem value={Course.mba}>MBA</SelectItem>
+                        <SelectItem value={Course.other}>
+                          Other (specify below)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                {/* Radio fields */}
+                {form.interestedCourse === Course.other && (
+                  <div>
+                    <Label
+                      htmlFor="otherCourse"
+                      className="text-sm font-semibold text-foreground mb-1.5 block"
+                    >
+                      Please specify your course *
+                    </Label>
+                    <Input
+                      id="otherCourse"
+                      data-ocid="lead.other_course.input"
+                      type="text"
+                      required
+                      placeholder="Enter your course name"
+                      value={form.otherCourseText}
+                      onChange={(e) =>
+                        setForm((p) => ({
+                          ...p,
+                          otherCourseText: e.target.value,
+                        }))
+                      }
+                      className="h-11"
+                    />
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <Label className="text-sm font-semibold text-foreground mb-2 block">
@@ -814,7 +880,7 @@ export default function App() {
                   type="submit"
                   data-ocid="lead.submit_button"
                   disabled={submitLead.isPending}
-                  className="w-full bg-orange text-white py-3.5 rounded-xl font-bold text-base hover:bg-[oklch(0.67_0.17_55)] transition-colors shadow-md disabled:opacity-60 flex items-center justify-center gap-2"
+                  className="w-full bg-orange text-white py-3.5 rounded-xl font-bold text-base transition-colors shadow-md disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {submitLead.isPending ? (
                     <>
@@ -822,9 +888,13 @@ export default function App() {
                       Submitting...
                     </>
                   ) : (
-                    "Fill the Form Now"
+                    "Submit Enquiry"
                   )}
                 </button>
+
+                <p className="text-center text-xs text-gray-500 mt-2">
+                  ✅ Your information is safe with us. We'll never spam you.
+                </p>
               </form>
             )}
           </div>
@@ -833,31 +903,47 @@ export default function App() {
 
       {/* WHY CHOOSE US */}
       <section className="py-16 lg:py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3">
-              Why Students <span className="text-orange">Trust</span>{" "}
-              CourseAdmission.in Bihar
+            <h2
+              className="font-bold text-foreground mb-3"
+              style={{ fontSize: "32px" }}
+            >
+              ✅ Why Students Trust{" "}
+              <span className="text-orange">RG ARNAV EDU CONSULTANCY</span>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {WHY_CHOOSE.map((item, i) => (
-              <div
-                key={item.title}
-                data-ocid={`why.item.${i + 1}`}
-                className="bg-white rounded-xl card-shadow p-6 flex flex-col items-center text-center"
-              >
-                <div className="w-12 h-12 bg-orange/10 rounded-xl flex items-center justify-center mb-4">
-                  <item.icon className="w-6 h-6 text-orange" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+            <div className="space-y-4">
+              {WHY_LEFT.map((item, i) => (
+                <div
+                  key={item.title}
+                  data-ocid={`why.item.${i + 1}`}
+                  className="flex items-start gap-3"
+                >
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground text-sm sm:text-base">
+                    <span className="font-bold">✔ {item.title}</span> –{" "}
+                    {item.desc}
+                  </p>
                 </div>
-                <h3 className="font-bold text-foreground text-sm mb-1.5">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground text-xs leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="space-y-4">
+              {WHY_RIGHT.map((item, i) => (
+                <div
+                  key={item.title}
+                  data-ocid={`why.item.${i + 5}`}
+                  className="flex items-start gap-3"
+                >
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground text-sm sm:text-base">
+                    <span className="font-bold">✔ {item.title}</span> –{" "}
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -866,8 +952,12 @@ export default function App() {
       <section className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3">
-              What Students <span className="text-orange">Say About Us</span>
+            <h2
+              className="font-bold text-foreground mb-3"
+              style={{ fontSize: "32px" }}
+            >
+              🗣️ What Students Say About{" "}
+              <span className="text-orange">RG ARNAV EDU CONSULTANCY</span>
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -886,7 +976,7 @@ export default function App() {
                   ))}
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1 italic">
-                  "{t.text}"
+                  &ldquo;{t.text}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-orange/20 rounded-full flex items-center justify-center font-bold text-orange">
@@ -908,94 +998,165 @@ export default function App() {
       </section>
 
       {/* WHATSAPP COMMUNITY */}
-      <section className="py-16 lg:py-20 bg-green-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-2xl mb-6">
-            <SiWhatsapp className="w-9 h-9 text-white" />
+      <section
+        className="py-16 lg:py-20"
+        style={{
+          background: "linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)",
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl card-shadow p-8 sm:p-10 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-2xl mb-6">
+              <SiWhatsapp className="w-9 h-9 text-white" />
+            </div>
+            <h2
+              className="font-bold text-foreground mb-3"
+              style={{ fontSize: "32px" }}
+            >
+              📱 Join Our{" "}
+              <span className="text-green-600">WhatsApp Community</span>
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              Get instant admission updates, DRCC news, college information, and
+              career tips directly on WhatsApp from RG ARNAV RAJ.
+            </p>
+            <ul className="text-left max-w-sm mx-auto space-y-2 mb-8">
+              {[
+                "Daily admission updates",
+                "DRCC scheme alerts",
+                "College application deadlines",
+                "Free guidance posts",
+                "Direct chat with RG ARNAV EDU CONSULTANCY team",
+              ].map((benefit) => (
+                <li
+                  key={benefit}
+                  className="flex items-center gap-2 text-sm text-foreground"
+                >
+                  <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  ✅ {benefit}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://whatsapp.com/channel/0029Vb7HF9r6buMGmZjbHd3T"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-ocid="whatsapp.join.button"
+              className="inline-flex items-center gap-2 bg-green-500 text-white px-8 py-3.5 rounded-xl font-bold text-base hover:bg-green-600 transition-colors shadow-lg"
+            >
+              <SiWhatsapp className="w-5 h-5" />🔗 Join WhatsApp Community (500+
+              Students)
+            </a>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Limited slots available – join now!
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-            Join Our <span className="text-green-600">WhatsApp Community</span>
-          </h2>
-          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Get instant admission updates, DRCC news, college information, and
-            career tips directly on WhatsApp
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8 max-w-2xl mx-auto">
-            {[
-              "Daily admission updates",
-              "DRCC scheme alerts",
-              "College application deadlines",
-              "Free guidance posts",
-            ].map((benefit) => (
-              <div
-                key={benefit}
-                className="bg-white rounded-lg p-3 border border-green-100 text-xs font-medium text-foreground flex items-center gap-2"
-              >
-                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                {benefit}
+        </div>
+      </section>
+
+      {/* ABOUT THE CONSULTANT */}
+      <section className="py-16 lg:py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2
+              className="font-bold text-foreground"
+              style={{ fontSize: "28px" }}
+            >
+              👤 Meet Your Guide –{" "}
+              <span className="text-orange">RG ARNAV RAJ</span>
+            </h2>
+          </div>
+          <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
+            <div className="flex-shrink-0">
+              <div className="w-48 h-48 rounded-xl bg-gray-200 flex items-center justify-center text-center text-gray-500 text-sm p-4">
+                📷 Add your professional photo here
               </div>
-            ))}
+            </div>
+            <div className="flex-1">
+              <p className="text-foreground text-base leading-relaxed mb-4">
+                RG ARNAV RAJ is an education consultant dedicated to helping
+                Bihar students make the right career choices after 12th. With
+                expertise in the Bihar Student Credit Card (DRCC) scheme and
+                college admissions, he has guided hundreds of students toward
+                successful careers in BCA, BBA, B.Com, B.Sc, and Diploma
+                courses.
+              </p>
+              <p className="text-foreground text-base leading-relaxed italic border-l-4 border-orange pl-4">
+                His mission: &ldquo;No student should miss out on education due
+                to lack of guidance or financial constraints.&rdquo;
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="https://wa.me/918809976942"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-ocid="about.whatsapp.button"
+                  className="inline-flex items-center gap-2 bg-green-500 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-green-600 transition-colors"
+                >
+                  <SiWhatsapp className="w-4 h-4" /> Chat on WhatsApp
+                </a>
+                <a
+                  href="tel:8809976942"
+                  data-ocid="about.call.button"
+                  className="inline-flex items-center gap-2 bg-orange text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-colors"
+                >
+                  <Phone className="w-4 h-4" /> Call Now
+                </a>
+              </div>
+            </div>
           </div>
-          <a
-            href="/"
-            data-ocid="whatsapp.join.button"
-            className="inline-flex items-center gap-2 bg-green-500 text-white px-8 py-3.5 rounded-xl font-bold text-base hover:bg-green-600 transition-colors shadow-lg"
-          >
-            <SiWhatsapp className="w-5 h-5" />
-            Join WhatsApp Community
-          </a>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-navy py-12">
+      <footer className="bg-navy py-12" style={{ backgroundColor: "#1e293b" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/10">
-            {/* Brand */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pb-10 border-b border-white/10">
+            {/* Column 1: Contact */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-orange rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-bold text-white text-base">
-                  CourseAdmission.in Bihar
-                </span>
-              </div>
-              <p className="text-white/60 text-sm leading-relaxed">
-                Free admission guidance for Bihar students after 12th. We help
-                you choose the right course and college.
-              </p>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-bold text-white mb-4">Contact Us</h4>
-              <ul className="space-y-2.5 text-sm text-white/70">
+              <h4 className="font-bold text-white mb-5 text-lg">
+                Contact RG ARNAV EDU CONSULTANCY
+              </h4>
+              <ul className="space-y-3 text-sm text-white/75">
+                <li className="flex items-center gap-2">
+                  <span>👤</span>
+                  <span>
+                    Owner: <strong className="text-white">RG ARNAV RAJ</strong>
+                  </span>
+                </li>
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-orange flex-shrink-0" />
-                  [Your Number]
+                  <a
+                    href="tel:8809976942"
+                    className="hover:text-orange transition-colors"
+                  >
+                    8809976942
+                  </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-orange flex-shrink-0" />
-                  [Your Email]
+                  <a
+                    href="mailto:rgarnaveducons@gmail.com"
+                    className="hover:text-orange transition-colors break-all"
+                  >
+                    rgarnaveducons@gmail.com
+                  </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-orange flex-shrink-0" />
-                  Serving: Bihar Students
+                  <span>Serving: All Bihar Districts</span>
                 </li>
               </ul>
             </div>
 
-            {/* Quick Links */}
+            {/* Column 2: Quick Links */}
             <div>
-              <h4 className="font-bold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
+              <h4 className="font-bold text-white mb-5 text-lg">Quick Links</h4>
+              <ul className="space-y-2.5 text-sm">
                 {[
-                  { label: "Home", id: "home" },
-                  { label: "Courses", id: "courses" },
-                  { label: "DRCC Guide", id: "drcc-guide" },
-                  { label: "Contact", id: "contact" },
-                  { label: "Privacy Policy", id: "home" },
+                  { label: "Home", id: "home", external: false },
+                  { label: "Courses", id: "courses", external: false },
+                  { label: "DRCC Guide", id: "drcc-guide", external: false },
                 ].map((link) => (
                   <li key={link.label}>
                     <button
@@ -1008,46 +1169,91 @@ export default function App() {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <a
+                    href="https://forms.gle/NhzQWPpbd5wjusc99"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.admission_form.link"
+                    className="text-white/70 hover:text-orange transition-colors"
+                  >
+                    Admission Form
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://whatsapp.com/channel/0029Vb7HF9r6buMGmZjbHd3T"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.whatsapp_community.link"
+                    className="text-white/70 hover:text-orange transition-colors"
+                  >
+                    WhatsApp Community
+                  </a>
+                </li>
               </ul>
             </div>
 
-            {/* Social */}
+            {/* Column 3: Social Media */}
             <div>
-              <h4 className="font-bold text-white mb-4">Follow Us</h4>
-              <div className="flex gap-3">
-                <a
-                  href="/"
-                  data-ocid="footer.facebook.link"
-                  className="w-10 h-10 bg-white/10 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors"
-                  aria-label="Facebook"
-                >
-                  <Facebook className="w-5 h-5 text-white" />
-                </a>
-                <a
-                  href="/"
-                  data-ocid="footer.instagram.link"
-                  className="w-10 h-10 bg-white/10 hover:bg-pink-500 rounded-lg flex items-center justify-center transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-5 h-5 text-white" />
-                </a>
-                <a
-                  href="/"
-                  data-ocid="footer.whatsapp.link"
-                  className="w-10 h-10 bg-white/10 hover:bg-green-500 rounded-lg flex items-center justify-center transition-colors"
-                  aria-label="WhatsApp"
-                >
-                  <SiWhatsapp className="w-5 h-5 text-white" />
-                </a>
-              </div>
+              <h4 className="font-bold text-white mb-5 text-lg">
+                Social Media
+              </h4>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="https://www.instagram.com/r_garnav30?igsh=emMzdXhmOG4yNzNz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.instagram.link"
+                    className="flex items-center gap-2 text-white/70 hover:text-pink-400 transition-colors"
+                  >
+                    <SiInstagram className="w-4 h-4" /> 📷 Instagram:
+                    @r_garnav30
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/share/1CEfhqJwCF/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.facebook.link"
+                    className="flex items-center gap-2 text-white/70 hover:text-blue-400 transition-colors"
+                  >
+                    <SiFacebook className="w-4 h-4" /> 📘 Facebook: RG ARNAV EDU
+                    CONSULTANCY
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/918809976942"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.whatsapp.link"
+                    className="flex items-center gap-2 text-white/70 hover:text-green-400 transition-colors"
+                  >
+                    <SiWhatsapp className="w-4 h-4" /> 💬 WhatsApp: 8809976942
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://whatsapp.com/channel/0029Vb7HF9r6buMGmZjbHd3T"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="footer.whatsapp_channel.link"
+                    className="flex items-center gap-2 text-white/70 hover:text-green-400 transition-colors"
+                  >
+                    <SiWhatsapp className="w-4 h-4" /> 📢 WhatsApp Community
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Copyright */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
             <p>
-              © {new Date().getFullYear()} CourseAdmission.in Bihar. All rights
-              reserved.
+              © 2026 RG ARNAV EDU CONSULTANCY (CourseAdmission.in Bihar). All
+              rights reserved. | Designed for Bihar Students
             </p>
             <p className="flex items-center gap-1">
               Built with{" "}

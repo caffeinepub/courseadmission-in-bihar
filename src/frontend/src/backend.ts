@@ -91,6 +91,7 @@ export class ExternalBlob {
 }
 export interface Lead {
     twelfthStream: Stream;
+    otherCourseText?: string;
     interestedCourse: Course;
     fullName: string;
     mobileNumber: string;
@@ -103,8 +104,13 @@ export enum Course {
     bba = "bba",
     bca = "bca",
     bsc = "bsc",
+    llb = "llb",
+    mba = "mba",
     other = "other",
     bcom = "bcom",
+    pharmacy = "pharmacy",
+    btech = "btech",
+    agriculture = "agriculture",
     diploma = "diploma"
 }
 export enum EntranceExam {
@@ -120,7 +126,7 @@ export enum Stream {
 }
 export interface backendInterface {
     getAllLeads(): Promise<Array<Lead>>;
-    submitLead(fullName: string, mobileNumber: string, district: string, twelfthStream: Stream, twelfthPercentage: bigint, interestedCourse: Course, needsDrccSupport: boolean, entranceExam: EntranceExam): Promise<void>;
+    submitLead(fullName: string, mobileNumber: string, district: string, twelfthStream: Stream, twelfthPercentage: bigint, interestedCourse: Course, otherCourseText: string | null, needsDrccSupport: boolean, entranceExam: EntranceExam): Promise<void>;
 }
 import type { Course as _Course, EntranceExam as _EntranceExam, Lead as _Lead, Stream as _Stream } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -139,26 +145,26 @@ export class Backend implements backendInterface {
             return from_candid_vec_n1(this._uploadFile, this._downloadFile, result);
         }
     }
-    async submitLead(arg0: string, arg1: string, arg2: string, arg3: Stream, arg4: bigint, arg5: Course, arg6: boolean, arg7: EntranceExam): Promise<void> {
+    async submitLead(arg0: string, arg1: string, arg2: string, arg3: Stream, arg4: bigint, arg5: Course, arg6: string | null, arg7: boolean, arg8: EntranceExam): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.submitLead(arg0, arg1, arg2, to_candid_Stream_n10(this._uploadFile, this._downloadFile, arg3), arg4, to_candid_Course_n12(this._uploadFile, this._downloadFile, arg5), arg6, to_candid_EntranceExam_n14(this._uploadFile, this._downloadFile, arg7));
+                const result = await this.actor.submitLead(arg0, arg1, arg2, to_candid_Stream_n11(this._uploadFile, this._downloadFile, arg3), arg4, to_candid_Course_n13(this._uploadFile, this._downloadFile, arg5), to_candid_opt_n15(this._uploadFile, this._downloadFile, arg6), arg7, to_candid_EntranceExam_n16(this._uploadFile, this._downloadFile, arg8));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.submitLead(arg0, arg1, arg2, to_candid_Stream_n10(this._uploadFile, this._downloadFile, arg3), arg4, to_candid_Course_n12(this._uploadFile, this._downloadFile, arg5), arg6, to_candid_EntranceExam_n14(this._uploadFile, this._downloadFile, arg7));
+            const result = await this.actor.submitLead(arg0, arg1, arg2, to_candid_Stream_n11(this._uploadFile, this._downloadFile, arg3), arg4, to_candid_Course_n13(this._uploadFile, this._downloadFile, arg5), to_candid_opt_n15(this._uploadFile, this._downloadFile, arg6), arg7, to_candid_EntranceExam_n16(this._uploadFile, this._downloadFile, arg8));
             return result;
         }
     }
 }
-function from_candid_Course_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Course): Course {
-    return from_candid_variant_n7(_uploadFile, _downloadFile, value);
+function from_candid_Course_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Course): Course {
+    return from_candid_variant_n8(_uploadFile, _downloadFile, value);
 }
-function from_candid_EntranceExam_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _EntranceExam): EntranceExam {
-    return from_candid_variant_n9(_uploadFile, _downloadFile, value);
+function from_candid_EntranceExam_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _EntranceExam): EntranceExam {
+    return from_candid_variant_n10(_uploadFile, _downloadFile, value);
 }
 function from_candid_Lead_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Lead): Lead {
     return from_candid_record_n3(_uploadFile, _downloadFile, value);
@@ -166,8 +172,12 @@ function from_candid_Lead_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8A
 function from_candid_Stream_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Stream): Stream {
     return from_candid_variant_n5(_uploadFile, _downloadFile, value);
 }
+function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
+    return value.length === 0 ? null : value[0];
+}
 function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     twelfthStream: _Stream;
+    otherCourseText: [] | [string];
     interestedCourse: _Course;
     fullName: string;
     mobileNumber: string;
@@ -177,6 +187,7 @@ function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint
     entranceExam: _EntranceExam;
 }): {
     twelfthStream: Stream;
+    otherCourseText?: string;
     interestedCourse: Course;
     fullName: string;
     mobileNumber: string;
@@ -187,40 +198,17 @@ function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint
 } {
     return {
         twelfthStream: from_candid_Stream_n4(_uploadFile, _downloadFile, value.twelfthStream),
-        interestedCourse: from_candid_Course_n6(_uploadFile, _downloadFile, value.interestedCourse),
+        otherCourseText: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.otherCourseText)),
+        interestedCourse: from_candid_Course_n7(_uploadFile, _downloadFile, value.interestedCourse),
         fullName: value.fullName,
         mobileNumber: value.mobileNumber,
         district: value.district,
         needsDrccSupport: value.needsDrccSupport,
         twelfthPercentage: value.twelfthPercentage,
-        entranceExam: from_candid_EntranceExam_n8(_uploadFile, _downloadFile, value.entranceExam)
+        entranceExam: from_candid_EntranceExam_n9(_uploadFile, _downloadFile, value.entranceExam)
     };
 }
-function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    arts: null;
-} | {
-    commerce: null;
-} | {
-    science: null;
-}): Stream {
-    return "arts" in value ? Stream.arts : "commerce" in value ? Stream.commerce : "science" in value ? Stream.science : value;
-}
-function from_candid_variant_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    bba: null;
-} | {
-    bca: null;
-} | {
-    bsc: null;
-} | {
-    other: null;
-} | {
-    bcom: null;
-} | {
-    diploma: null;
-}): Course {
-    return "bba" in value ? Course.bba : "bca" in value ? Course.bca : "bsc" in value ? Course.bsc : "other" in value ? Course.other : "bcom" in value ? Course.bcom : "diploma" in value ? Course.diploma : value;
-}
-function from_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     jee: null;
 } | {
     cuet: null;
@@ -231,19 +219,56 @@ function from_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uin
 }): EntranceExam {
     return "jee" in value ? EntranceExam.jee : "cuet" in value ? EntranceExam.cuet : "neet" in value ? EntranceExam.neet : "none" in value ? EntranceExam.none : value;
 }
+function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    arts: null;
+} | {
+    commerce: null;
+} | {
+    science: null;
+}): Stream {
+    return "arts" in value ? Stream.arts : "commerce" in value ? Stream.commerce : "science" in value ? Stream.science : value;
+}
+function from_candid_variant_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    bba: null;
+} | {
+    bca: null;
+} | {
+    bsc: null;
+} | {
+    llb: null;
+} | {
+    mba: null;
+} | {
+    other: null;
+} | {
+    bcom: null;
+} | {
+    pharmacy: null;
+} | {
+    btech: null;
+} | {
+    agriculture: null;
+} | {
+    diploma: null;
+}): Course {
+    return "bba" in value ? Course.bba : "bca" in value ? Course.bca : "bsc" in value ? Course.bsc : "llb" in value ? Course.llb : "mba" in value ? Course.mba : "other" in value ? Course.other : "bcom" in value ? Course.bcom : "pharmacy" in value ? Course.pharmacy : "btech" in value ? Course.btech : "agriculture" in value ? Course.agriculture : "diploma" in value ? Course.diploma : value;
+}
 function from_candid_vec_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Lead>): Array<Lead> {
     return value.map((x)=>from_candid_Lead_n2(_uploadFile, _downloadFile, x));
 }
-function to_candid_Course_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Course): _Course {
-    return to_candid_variant_n13(_uploadFile, _downloadFile, value);
+function to_candid_Course_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Course): _Course {
+    return to_candid_variant_n14(_uploadFile, _downloadFile, value);
 }
-function to_candid_EntranceExam_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EntranceExam): _EntranceExam {
-    return to_candid_variant_n15(_uploadFile, _downloadFile, value);
+function to_candid_EntranceExam_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EntranceExam): _EntranceExam {
+    return to_candid_variant_n17(_uploadFile, _downloadFile, value);
 }
-function to_candid_Stream_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Stream): _Stream {
-    return to_candid_variant_n11(_uploadFile, _downloadFile, value);
+function to_candid_Stream_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Stream): _Stream {
+    return to_candid_variant_n12(_uploadFile, _downloadFile, value);
 }
-function to_candid_variant_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Stream): {
+function to_candid_opt_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
+    return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_variant_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Stream): {
     arts: null;
 } | {
     commerce: null;
@@ -258,16 +283,26 @@ function to_candid_variant_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint
         science: null
     } : value;
 }
-function to_candid_variant_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Course): {
+function to_candid_variant_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Course): {
     bba: null;
 } | {
     bca: null;
 } | {
     bsc: null;
 } | {
+    llb: null;
+} | {
+    mba: null;
+} | {
     other: null;
 } | {
     bcom: null;
+} | {
+    pharmacy: null;
+} | {
+    btech: null;
+} | {
+    agriculture: null;
 } | {
     diploma: null;
 } {
@@ -277,15 +312,25 @@ function to_candid_variant_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint
         bca: null
     } : value == Course.bsc ? {
         bsc: null
+    } : value == Course.llb ? {
+        llb: null
+    } : value == Course.mba ? {
+        mba: null
     } : value == Course.other ? {
         other: null
     } : value == Course.bcom ? {
         bcom: null
+    } : value == Course.pharmacy ? {
+        pharmacy: null
+    } : value == Course.btech ? {
+        btech: null
+    } : value == Course.agriculture ? {
+        agriculture: null
     } : value == Course.diploma ? {
         diploma: null
     } : value;
 }
-function to_candid_variant_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EntranceExam): {
+function to_candid_variant_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: EntranceExam): {
     jee: null;
 } | {
     cuet: null;

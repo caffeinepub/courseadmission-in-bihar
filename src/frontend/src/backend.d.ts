@@ -9,6 +9,7 @@ export interface None {
 export type Option<T> = Some<T> | None;
 export interface Lead {
     twelfthStream: Stream;
+    otherCourseText?: string;
     interestedCourse: Course;
     fullName: string;
     mobileNumber: string;
@@ -21,8 +22,13 @@ export enum Course {
     bba = "bba",
     bca = "bca",
     bsc = "bsc",
+    llb = "llb",
+    mba = "mba",
     other = "other",
     bcom = "bcom",
+    pharmacy = "pharmacy",
+    btech = "btech",
+    agriculture = "agriculture",
     diploma = "diploma"
 }
 export enum EntranceExam {
@@ -38,5 +44,5 @@ export enum Stream {
 }
 export interface backendInterface {
     getAllLeads(): Promise<Array<Lead>>;
-    submitLead(fullName: string, mobileNumber: string, district: string, twelfthStream: Stream, twelfthPercentage: bigint, interestedCourse: Course, needsDrccSupport: boolean, entranceExam: EntranceExam): Promise<void>;
+    submitLead(fullName: string, mobileNumber: string, district: string, twelfthStream: Stream, twelfthPercentage: bigint, interestedCourse: Course, otherCourseText: string | null, needsDrccSupport: boolean, entranceExam: EntranceExam): Promise<void>;
 }
