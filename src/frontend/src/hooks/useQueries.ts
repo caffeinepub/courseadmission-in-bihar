@@ -35,3 +35,19 @@ export function useSubmitLead() {
     },
   });
 }
+
+import { useQuery } from "@tanstack/react-query";
+import type { Lead } from "../backend";
+export type { Lead };
+
+export function useGetAllLeads() {
+  const { actor, isFetching } = useActor();
+  return useQuery<Lead[]>({
+    queryKey: ["leads"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllLeads();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}

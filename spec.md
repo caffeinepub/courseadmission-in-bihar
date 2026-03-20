@@ -1,37 +1,25 @@
 # CourseAdmission.in Bihar
 
 ## Current State
-New project. No existing code.
+The app has a full one-page website for RG ARNAV EDU CONSULTANCY with a student lead capture form (submitLead). The backend stores leads with: fullName, mobileNumber, district, twelfthStream, twelfthPercentage, interestedCourse, otherCourseText, needsDrccSupport, entranceExam. The backend has getAllLeads() query function. No admin panel exists yet.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full one-page website for free Bihar student admission guidance
-- Lead capture form that stores submissions in Motoko backend
-- All sections: Header, Hero, Courses, DRCC Guide, How It Works, Lead Form, Why Choose Us, Testimonials, WhatsApp Community, Footer
+- Admin Dashboard page at /admin route (password-protected with a simple hardcoded PIN "RG2024")
+- Table showing all student submissions: Name, Mobile, District, Stream, %, Course, DRCC Support, Entrance Exam
+- Summary stats: total leads, stream breakdown
+- Download/export as CSV button
+- Mobile-responsive table with horizontal scroll
 
 ### Modify
-- N/A
+- App.tsx to include /admin route
 
 ### Remove
-- N/A
+- Nothing
 
 ## Implementation Plan
-
-### Backend (Motoko)
-- `LeadSubmission` record type: name, mobile, district, stream, percentage, course, needsDRCC, entranceExam, timestamp
-- `submitLead(lead)` public func to store lead
-- `getLeads()` admin func to retrieve all leads (no auth for now)
-
-### Frontend
-- Sticky header with logo and nav links (smooth scroll)
-- Hero section with headline, sub-headline, badge, CTA button
-- Courses section with cards (BCA, BBA, B.Com, B.Sc, Diploma)
-- DRCC/Student Credit Card section with benefits list
-- How It Works section with 4-step process
-- Lead capture form with all specified fields, submits to backend, shows thank-you
-- Why Choose Us section with 5 points
-- Testimonials section with 3 cards
-- WhatsApp Community section
-- Footer with contact, links, social icons
-- Saffron/orange and blue color scheme, mobile responsive
+1. Create AdminDashboard component with PIN login ("RG2024") and leads table
+2. Add /admin route in App.tsx
+3. Wire getAllLeads() backend call to populate the table
+4. Add CSV export functionality

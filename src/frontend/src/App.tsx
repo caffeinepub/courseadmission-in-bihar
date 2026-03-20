@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { SiFacebook, SiInstagram, SiWhatsapp } from "react-icons/si";
+import AdminDashboard from "./components/AdminDashboard";
 import {
   Course,
   EntranceExam,
@@ -213,7 +214,7 @@ function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
 
-export default function App() {
+function MainSite() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
@@ -1253,7 +1254,13 @@ export default function App() {
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
             <p>
               © 2026 RG ARNAV EDU CONSULTANCY (CourseAdmission.in Bihar). All
-              rights reserved. | Designed for Bihar Students
+              rights reserved. | Designed for Bihar Students |{" "}
+              <a
+                href="/admin"
+                className="hover:text-white/70 transition-colors"
+              >
+                Admin
+              </a>
             </p>
             <p className="flex items-center gap-1">
               Built with{" "}
@@ -1272,4 +1279,12 @@ export default function App() {
       </footer>
     </div>
   );
+}
+
+export default function App() {
+  const path = window.location.pathname;
+  if (path === "/admin" || path.startsWith("/admin/")) {
+    return <AdminDashboard />;
+  }
+  return <MainSite />;
 }

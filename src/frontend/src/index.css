@@ -109,3 +109,32 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   }
 }
+
+/* Admin dashboard color utilities */
+.text-blue {
+  color: oklch(0.55 0.2 258);
+}
+.bg-blue {
+  background-color: oklch(0.55 0.2 258);
+}
+.hover\:bg-blue:hover {
+  background-color: oklch(0.55 0.2 258);
+}
+.text-green {
+  color: oklch(0.6 0.18 158);
+}
+.bg-green {
+  background-color: oklch(0.6 0.18 158);
+}
+.bg-blue\/10 {
+  background-color: oklch(0.55 0.2 258 / 0.1);
+}
+.bg-green\/10 {
+  background-color: oklch(0.6 0.18 158 / 0.1);
+}
+.bg-orange\/10 {
+  background-color: oklch(0.7 0.17 58 / 0.1);
+}
+.bg-admin-bg {
+  background-color: oklch(0.97 0.01 243);
+}
